@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Eventos - Cine QRCode</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-white: #ffffff;
+            --primary-black: #121212;
+            --accent-red: #d9534f;
+            --accent-yellow: #f0ad4e;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--light-gray);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            color: var(--primary-black);
+        }
+
+        .logo span {
+            color: var(--accent-red);
+        }
+
+        .nav-links {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-links li {
+            margin-bottom: 5px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--light-gray);
+            color: var(--accent-red);
+        }
+
+        .nav-links a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout {
+            padding: 20px;
+            border-top: 1px solid var(--medium-gray);
+            margin-top: auto;
+        }
+
+        .logout a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .logout a:hover {
+            color: var(--accent-red);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 0;
+        }
+
+        .header {
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--medium-gray);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.2);
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-white);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: var(--dark-gray);
+        }
+
+        /* Mobile Search - Só aparece no mobile */
+        .mobile-search {
+            display: none;
+            margin-bottom: 25px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .event-card {
+            background-color: var(--primary-white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .event-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+
+        .event-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent-yellow);
+            color: var(--primary-black);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .event-content {
+            padding: 20px;
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .event-date {
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-location {
+            color: var(--dark-gray);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .event-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            margin-bottom: 15px;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .event-actions .btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: var(--primary-white);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #c9302c;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-black);
+            color: var(--primary-black);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--dark-gray);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--medium-gray);
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: var(--dark-gray);
+        }
+
+        /* Bottom Navigation para Mobile */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--primary-white);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            transition: var(--transition);
+        }
+
+        .nav-item.active {
+            color: var(--accent-red);
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding-bottom: 70px;
+            }
+            
+            .header {
+                display: none;
+            }
+            
+            .mobile-search {
+                display: block;
+            }
+            
+            .bottom-nav {
+                display: block;
+            }
+            
+            .events-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title h1 {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .event-actions {
+                flex-direction: column;
+            }
+            
+            .page-title h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar para Desktop -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>Cine <span>QRCode</span></h1>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="eventos.html"><i class="fas fa-home"></i> Todos os Eventos</a></li>
+                <li><a href="meus-eventos.html" class="active"><i class="fas fa-ticket-alt"></i> Meus Eventos</a></li>
+                <li><a href="perfil.html"><i class="fas fa-user"></i> Perfil</a></li>
+            </ul>
+            
+            <div class="logout">
+                <a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </div>
+        </div>
+        
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <!-- Header para Desktop (com input) -->
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar meus ingressos...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatarHeader">
+                        <img id="userAvatarImage" src="" alt="Avatar" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                        <span id="userInitials">JM</span>
+                    </div>
+                    <span id="userName">João Maputo</span>
+                </div>
+            </div>
+            
+            <!-- Conteúdo -->
+            <div class="content">
+                <div class="page-title">
+                    <h1>Meus Eventos</h1>
+                    <p>Gerencie seus ingressos adquiridos</p>
+                </div>
+                
+                <!-- Search para Mobile (aparece só no mobile) -->
+                <div class="mobile-search">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar meus ingressos...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                
+                <div class="events-grid">
+                    <!-- Evento 1 -->
+                    <!-- <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1580651315530-69c8e0026377?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Festival de Música">
+                            <div class="event-badge">Show</div>
+                        </div>
+                        <div class="event-content">
+                            <h3 class="event-title">Festival de Música Manica</h3>
+                            <div class="event-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>15 de Outubro, 20:00</span>
+                            </div>
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Centro Cultural do Chimoio</span>
+                            </div>
+                            <div class="event-price">500 MT</div>
+                            <div class="event-actions">
+                                <a href="ingresso.html" class="btn btn-primary">Ver Ingresso</a>
+                                <a href="detalhes.html" class="btn btn-outline">Ver Mais</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <!-- Evento 2 -->
+                    <!-- <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2056&q=80" alt="Filme">
+                            <div class="event-badge">Cinema</div>
+                        </div>
+                        <div class="event-content">
+                            <h3 class="event-title">Aventura em Moçambique</h3>
+                            <div class="event-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>18 de Outubro, 19:30</span>
+                            </div>
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Cine Max - Chimoio Shopping</span>
+                            </div>
+                            <div class="event-price">200 MT</div>
+                            <div class="event-actions">
+                                <a href="ingresso.html" class="btn btn-primary">Ver Ingresso</a>
+                                <a href="detalhes.html" class="btn btn-outline">Ver Mais</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <!-- Evento 3 -->
+                    <!-- <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Show">
+                            <div class="event-badge">Show</div>
+                        </div>
+                        <div class="event-content">
+                            <h3 class="event-title">Noite de Marrabenta</h3>
+                            <div class="event-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>22 de Outubro, 21:00</span>
+                            </div>
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Jardim dos Professores</span>
+                            </div>
+                            <div class="event-price">350 MT</div>
+                            <div class="event-actions">
+                                <a href="ingresso.html" class="btn btn-primary">Ver Ingresso</a>
+                                <a href="detalhes.html" class="btn btn-outline">Ver Mais</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <!-- Evento 4 -->
+                    <!-- <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1595769816263-9b910be24d5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2079&q=80" alt="Filme">
+                            <div class="event-badge">Cinema</div>
+                        </div>
+                        <div class="event-content">
+                            <h3 class="event-title">Velocidade Máxima</h3>
+                            <div class="event-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>25 de Outubro, 20:15</span>
+                            </div>
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Cine Max - Chimoio Shopping</span>
+                            </div>
+                            <div class="event-price">250 MT</div>
+                            <div class="event-actions">
+                                <a href="ingresso.html" class="btn btn-primary">Ver Ingresso</a>
+                                <a href="detalhes.html" class="btn btn-outline">Ver Mais</a>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                
+                <!-- Estado vazio (para quando não há eventos) -->
+                <div class="empty-state">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h3>Nenhum ingresso adquirido</h3>
+                    <p>Você ainda não comprou ingressos para nenhum evento.</p>
+                    <a href="eventos.html" class="btn btn-primary" style="display: inline-block; margin-top: 20px; width: auto; padding: 10px 20px;">Explorar Eventos</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation para Mobile -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <a href="eventos.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Todos Eventos</span>
+                </a>
+                <a href="meus-eventos.html" class="nav-item active">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Meus Eventos</span>
+                </a>
+                <a href="perfil.html" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Perfil</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funções de autenticação e perfil
+        function getCurrentUserFromStorage() {
+            try {
+                return JSON.parse(localStorage.getItem('cine_currentUser') || 'null');
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function displayUserProfile(user) {
+            if (!user) {
+                // Redirecionar para login se não houver usuário
+                window.location.href = 'access.html';
+                return;
+            }
+
+            // Determinar nome de exibição
+            let displayName = user.name || '';
+            if (!displayName && user.email) {
+                const local = user.email.split('@')[0];
+                displayName = local.replace(/[._\-]/g, ' ')
+                    .split(' ')
+                    .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            }
+
+            // Calcular iniciais
+            let initials = '';
+            if (displayName) {
+                const parts = displayName.split(' ');
+                initials = (parts[0] ? parts[0][0] : '') + (parts[1] ? parts[1][0] : (parts[0] && parts[0].length>1 ? parts[0][1] : ''));
+            } else if (user.email) {
+                initials = user.email.charAt(0).toUpperCase();
+            }
+
+            // Atualizar nome
+            const userNameEl = document.getElementById('userName');
+            if (userNameEl) userNameEl.textContent = displayName || user.email || '';
+
+            // Atualizar iniciais
+            const userInitials = document.getElementById('userInitials');
+            if (userInitials) userInitials.textContent = initials.toUpperCase();
+
+            // Carregar foto de perfil
+            displayAvatarImage(user.email);
+        }
+
+        function displayAvatarImage(email) {
+            const userAvatarImage = document.getElementById('userAvatarImage');
+            const userInitials = document.getElementById('userInitials');
+            
+            try {
+                const photos = JSON.parse(localStorage.getItem('cine_photos') || '{}');
+                if (photos[email]) {
+                    userAvatarImage.src = photos[email];
+                    userAvatarImage.style.display = 'block';
+                    userInitials.style.display = 'none';
+                } else {
+                    userAvatarImage.style.display = 'none';
+                    userInitials.style.display = 'block';
+                }
+            } catch (e) {
+                userAvatarImage.style.display = 'none';
+                userInitials.style.display = 'block';
+            }
+        }
+
+        // Funcionalidade de Logout da Sidebar
+        const sidebarLogoutLink = document.getElementById('logoutLink');
+        if (sidebarLogoutLink) {
+            sidebarLogoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('cine_currentUser');
+                showToast('Sessão encerrada com sucesso!', 'success');
+                setTimeout(function() {
+                    window.location.href = 'access.html';
+                }, 900);
+            });
+        }
+
+        // Toast helper
+        (function(){
+            const container = document.createElement('div');
+            container.className = 'toast-container';
+            Object.assign(container.style, {
+                position: 'fixed',
+                right: '20px',
+                bottom: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                zIndex: '9999',
+                pointerEvents: 'none'
+            });
+            document.body.appendChild(container);
+
+            window.showToast = function(message, type){
+                const toast = document.createElement('div');
+                toast.className = 'toast ' + (type || 'info');
+                Object.assign(toast.style, {
+                    pointerEvents: 'auto',
+                    minWidth: '220px',
+                    maxWidth: '320px',
+                    background: '#fff',
+                    color: '#222',
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
+                    display: 'flex',
+                    gap: '10px',
+                    alignItems: 'center',
+                    fontSize: '0.95rem',
+                    transform: 'translateY(10px)',
+                    opacity: '0',
+                    transition: 'opacity 240ms ease, transform 240ms ease',
+                    borderLeft: type === 'success' ? '4px solid #28a745' : type === 'error' ? '4px solid #dc3545' : '4px solid #17a2b8'
+                });
+
+                const icon = document.createElement('div');
+                icon.style.fontSize = '1.05rem';
+                if (type === 'success') icon.innerHTML = '<i class="fas fa-check-circle" style="color:#28a745"></i>';
+                else if (type === 'error') icon.innerHTML = '<i class="fas fa-exclamation-circle" style="color:#dc3545"></i>';
+                else icon.innerHTML = '<i class="fas fa-info-circle" style="color:#17a2b8"></i>';
+
+                const text = document.createElement('div');
+                text.textContent = message;
+
+                toast.appendChild(icon);
+                toast.appendChild(text);
+                container.appendChild(toast);
+
+                // show
+                setTimeout(function(){ toast.style.transform = 'translateY(0)'; toast.style.opacity = '1'; }, 20);
+
+                // remove after 3.2s
+                setTimeout(function(){
+                    toast.style.transform = 'translateY(10px)';
+                    toast.style.opacity = '0';
+                    setTimeout(function(){ container.removeChild(toast); }, 250);
+                }, 3200);
+            };
+        })();
+
+        // Carregar perfil ao iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = getCurrentUserFromStorage();
+            if (currentUser) {
+                displayUserProfile(currentUser);
+            } else {
+                window.location.href = 'access.html';
+            }
+
+            // Funcionalidade de busca e filtro
+            const searchInputs = document.querySelectorAll('.search-bar input');
+            searchInputs.forEach(input => {
+                input.addEventListener('keyup', function(e) {
+                    filterEvents(this.value.trim());
+                });
+            });
+
+            // Filtrar ao clicar no botão de busca
+            const searchButtons = document.querySelectorAll('.search-bar button');
+            searchButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    filterEvents(input.value.trim());
+                });
+            });
+            
+            // Alternar entre páginas no mobile
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        // Função para filtrar eventos
+        function filterEvents(searchTerm) {
+            const eventCards = document.querySelectorAll('.event-card');
+            let visibleCount = 0;
+
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent.toLowerCase();
+                const location = card.querySelector('.event-location span').textContent.toLowerCase();
+                const badge = card.querySelector('.event-badge').textContent.toLowerCase();
+                
+                const matchesSearch = !searchTerm || 
+                    title.includes(searchTerm.toLowerCase()) || 
+                    location.includes(searchTerm.toLowerCase()) || 
+                    badge.includes(searchTerm.toLowerCase());
+
+                if (matchesSearch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Mostrar mensagem se nenhum evento encontrado
+            const eventsGrid = document.querySelector('.events-grid');
+            let emptyMessage = document.querySelector('.empty-message');
+            
+            if (visibleCount === 0) {
+                if (!emptyMessage) {
+                    emptyMessage = document.createElement('div');
+                    emptyMessage.className = 'empty-message';
+                    emptyMessage.style.cssText = `
+                        grid-column: 1 / -1;
+                        text-align: center;
+                        padding: 40px 20px;
+                        color: #6c757d;
+                    `;
+                    eventsGrid.appendChild(emptyMessage);
+                }
+                emptyMessage.innerHTML = `
+                    <i class="fas fa-search" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5; display: block;"></i>
+                    <h3>Nenhum evento encontrado</h3>
+                    <p>Tente buscar por outro termo</p>
+                `;
+            } else {
+                if (emptyMessage) {
+                    emptyMessage.remove();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

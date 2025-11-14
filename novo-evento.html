@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Evento - Cine QRCode</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-white: #ffffff;
+            --primary-black: #121212;
+            --accent-red: #d9534f;
+            --accent-yellow: #f0ad4e;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background-color: var(--light-gray);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            color: var(--primary-black);
+        }
+
+        .logo span {
+            color: var(--accent-red);
+        }
+
+        .admin-info {
+            padding: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-red) 0%, #c9302c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-white);
+            font-weight: 600;
+        }
+
+        .admin-details h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .admin-details p {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+        }
+
+        .nav-links {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-links li {
+            margin-bottom: 5px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--light-gray);
+            color: var(--accent-red);
+        }
+
+        .nav-links a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout {
+            padding: 20px;
+            border-top: 1px solid var(--medium-gray);
+            margin-top: auto;
+        }
+
+        .logout a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .logout a:hover {
+            color: var(--accent-red);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 0;
+        }
+
+        .header {
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0;
+            color: var(--primary-black);
+        }
+
+        .header-title p {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            display: none;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mobile-title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .mobile-title h1 {
+            font-size: 1.3rem;
+            margin-bottom: 0;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--primary-black);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            background-color: var(--primary-white);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .form-group .required::after {
+            content: " *";
+            color: var(--accent-red);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.2);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .image-upload {
+            border: 2px dashed var(--medium-gray);
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 15px;
+        }
+
+        .image-upload:hover {
+            border-color: var(--accent-red);
+        }
+
+        .image-upload i {
+            font-size: 2.5rem;
+            color: var(--dark-gray);
+            margin-bottom: 15px;
+        }
+
+        .image-upload p {
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+
+        .image-upload small {
+            color: var(--medium-gray);
+        }
+
+        .image-preview {
+            display: none;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: var(--primary-white);
+        }
+
+        .btn-primary:hover {
+            background-color: #c9302c;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-black);
+            color: var(--primary-black);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Bottom Navigation para Mobile */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--primary-white);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            color: var(--dark-gray);
+            transition: var(--transition);
+            padding: 5px;
+            min-width: 60px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-red);
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+        }
+
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+
+        .mobile-sidebar.active {
+            left: 0;
+        }
+
+        .mobile-sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .mobile-sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .mobile-header {
+                display: flex;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding-bottom: 80px;
+            }
+            
+            .header {
+                display: none;
+            }
+            
+            .bottom-nav {
+                display: block;
+            }
+            
+            .mobile-sidebar {
+                display: block;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+            }
+            
+            .page-title h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .content {
+                padding: 15px 10px;
+            }
+            
+            .mobile-header {
+                padding: 12px 15px;
+            }
+            
+            .mobile-title h1 {
+                font-size: 1.1rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .page-title h1 {
+                font-size: 1.5rem;
+            }
+            
+            .page-title p {
+                font-size: 1rem;
+            }
+            
+            .nav-item {
+                font-size: 0.65rem;
+                min-width: 50px;
+            }
+            
+            .nav-item i {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar para Desktop -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>Cine <span>QRCode</span></h1>
+            </div>
+            
+            <div class="admin-info">
+                <div class="admin-avatar">AM</div>
+                <div class="admin-details">
+                    <h3>Admin Master</h3>
+                    <p>Administrador</p>
+                </div>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="novo-evento.html" class="active"><i class="fas fa-plus-circle"></i> Novo Evento</a></li>
+                <li><a href="verificar-ingresso.html"><i class="fas fa-qrcode"></i> Verificar Ingresso</a></li>
+            </ul>
+            
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </div>
+        </div>
+        
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-title">
+                <h1>Novo Evento</h1>
+            </div>
+            <div style="width: 40px;"></div>
+        </div>
+        
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <!-- Header para Desktop -->
+            <div class="header">
+                <div class="header-title">
+                    <h1>Criar Novo Evento</h1>
+                    <p>Preencha as informações básicas do evento</p>
+                </div>
+            </div>
+            
+            <!-- Conteúdo -->
+            <div class="content">
+                <div class="page-title">
+                    <h1>Novo Evento</h1>
+                    <p>Preencha todos os campos obrigatórios</p>
+                </div>
+                
+                <div class="form-container">
+                    <form id="eventForm">
+                        <!-- Nome do Evento -->
+                        <div class="form-group">
+                            <label for="eventName" class="required">Nome do Evento</label>
+                            <input type="text" id="eventName" class="form-control" placeholder="Ex: Festival de Música Manica" required>
+                        </div>
+
+                        <!-- Data e Hora -->
+                        <div class="form-group">
+                            <label for="eventDateTime" class="required">Data e Hora</label>
+                            <input type="datetime-local" id="eventDateTime" class="form-control" required>
+                        </div>
+
+                        <!-- Local -->
+                        <div class="form-group">
+                            <label for="eventLocation" class="required">Local</label>
+                            <input type="text" id="eventLocation" class="form-control" placeholder="Ex: Centro Cultural do Chimoio" required>
+                        </div>
+
+                        <!-- Capa do Evento -->
+                        <div class="form-group">
+                            <label for="eventImage" class="required">Capa do Evento</label>
+                            <div class="image-upload" onclick="document.getElementById('eventImage').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Clique para fazer upload da imagem</p>
+                                <small>Formatos: JPG, PNG • Tamanho máximo: 5MB</small>
+                            </div>
+                            
+                            <input type="file" id="eventImage" accept="image/*" style="display: none;" onchange="previewImage(event)" required>
+                            
+                            <div class="image-preview" id="imagePreview">
+                                <img id="previewImage" src="" alt="Pré-visualização">
+                                <button type="button" class="btn btn-outline" onclick="removeImage()" style="margin-top: 10px; padding: 8px 15px;">
+                                    <i class="fas fa-trash"></i> Remover Imagem
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Preço -->
+                        <div class="form-group">
+                            <label for="eventPrice" class="required">Preço (MT)</label>
+                            <input type="number" id="eventPrice" class="form-control" placeholder="Ex: 500" min="0" required>
+                        </div>
+
+                        <!-- Quantidade -->
+                        <div class="form-group">
+                            <label for="eventQuantity" class="required">Quantidade de Ingressos</label>
+                            <input type="number" id="eventQuantity" class="form-control" placeholder="Ex: 100" min="1" required>
+                        </div>
+
+                        <!-- Categoria -->
+                        <div class="form-group">
+                            <label for="eventCategory" class="required">Categoria</label>
+                            <select id="eventCategory" class="form-control" required>
+                                <option value="Musica">Show</option>
+                                <option value="Cinema">Cinema</option>
+                            </select>
+                        </div>
+
+
+                        <!-- Descrição -->
+                        <div class="form-group">
+                            <label for="eventDescription" class="required">Descrição</label>
+                            <textarea id="eventDescription" class="form-control" placeholder="Descreva o evento em detalhes..." required></textarea>
+                        </div>
+                        
+                        <!-- Ações do Formulário -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="clearForm()">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check"></i> Criar Evento
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div class="mobile-sidebar">
+            <div class="logo" style="padding: 20px; border-bottom: 1px solid var(--medium-gray);">
+                <h1>Cine <span>QRCode</span></h1>
+            </div>
+            
+            <div class="admin-info">
+                <div class="admin-avatar">AM</div>
+                <div class="admin-details">
+                    <h3>Admin Master</h3>
+                    <p>Administrador</p>
+                </div>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" class="active"><i class="fas fa-plus-circle"></i> Novo Evento</a></li>
+                <li><a href="verificar-ingresso.html"><i class="fas fa-qrcode"></i> Verificar Ingresso</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </div>
+        
+        <!-- Mobile Sidebar Overlay -->
+        <div class="mobile-sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+        
+        <!-- Bottom Navigation para Mobile -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <a href="admin-dashboard.html" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Novo Evento</span>
+                </a>
+                <a href="verificar-ingresso.html" class="nav-item">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Verificar</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // -----------------------------
+        // MOBILE MENU
+        // -----------------------------
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('.mobile-sidebar');
+            const overlay = document.querySelector('.mobile-sidebar-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // -----------------------------
+        // PREVIEW DA IMAGEM
+        // -----------------------------
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const preview = document.getElementById('previewImage');
+            const container = document.getElementById('imagePreview');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                container.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            document.getElementById('eventImage').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+
+        // -----------------------------
+        // GERAR ID ÚNICO PARA EVENTO
+        // -----------------------------
+        function generateEventID() {
+            return "ev_" + Math.random().toString(36).substr(2, 9);
+        }
+
+        // -----------------------------
+        // CARREGAR / SALVAR EVENTOS
+        // -----------------------------
+        function getEvents() {
+            return JSON.parse(localStorage.getItem("cine_events") || "{}");
+        }
+
+        function saveEvents(events) {
+            localStorage.setItem("cine_events", JSON.stringify(events));
+        }
+
+        // -----------------------------
+        // LIMPAR FORMULÁRIO
+        // -----------------------------
+        function clearForm() {
+            if (confirm("Você deseja realmente limpar tudo?")) {
+                document.getElementById('eventForm').reset();
+                document.getElementById('imagePreview').style.display = "none";
+            }
+        }
+
+        // -----------------------------
+        // SUBMIT DO FORMULÁRIO
+        // -----------------------------
+        document.getElementById('eventForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Inputs
+            const name = document.getElementById('eventName').value.trim();
+            const datetime = document.getElementById('eventDateTime').value;
+            const location = document.getElementById('eventLocation').value.trim();
+            const price = parseFloat(document.getElementById('eventPrice').value);
+            const quantity = parseInt(document.getElementById('eventQuantity').value);
+            const category = document.getElementById('eventCategory').value;
+            const description = document.getElementById('eventDescription').value.trim();
+            const imageFile = document.getElementById('eventImage').files[0];
+
+            if (!imageFile) {
+                alert("Selecione uma imagem para continuar.");
+                return;
+            }
+
+            // Converter Imagem para Base64
+            const base64Image = await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.readAsDataURL(imageFile);
+            });
+
+            // Criar evento
+            const id = generateEventID();
+            const newEvent = {
+                id,
+                name,
+                datetime,
+                location,
+                price,
+                quantity,
+                category,
+                description,
+                image: base64Image,
+                createdAt: new Date().toISOString()
+            };
+
+            // Salvar no localStorage
+            const events = getEvents();
+            events[id] = newEvent;
+            saveEvents(events);
+
+            alert("Evento criado com sucesso!");
+
+            // Redirecionar para página de listagem
+            window.location.href = "eventos.html";
+        });
+
+        // -----------------------------
+        // DEFINIR DATA MÍNIMA (AGORA)
+        // -----------------------------
+        const now = new Date();
+        const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+            .toISOString().slice(0, 16);
+
+        document.getElementById('eventDateTime').min = localDateTime;
+
+        // Prevenir zoom
+        document.addEventListener('touchstart', function() {}, { passive: true });
+
+    </script>
+
+</body>
+</html>
