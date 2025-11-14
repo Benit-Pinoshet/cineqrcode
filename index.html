@@ -98,8 +98,8 @@
 
         .btn-outline {
             background-color: transparent;
-            border: 2px solid var(--primary-black);
-            color: var(--primary-black);
+            border: 2px solid white;
+            color: white;
         }
 
         .btn-outline:hover {
@@ -640,17 +640,15 @@
             </button>
             
             <div class="search-bar">
-                <input type="text" placeholder="Pesquisar shows, filmes, eventos...">
+                <input type="text" placeholder="Pesquisar por eventos...">
                 <button><i class="fas fa-search"></i></button>
             </div>
             
             <nav class="nav-links">
                 <a href="#">Início</a>
-                <a href="#">Shows</a>
-                <a href="#">Cinema</a>
-                <a href="#">Promoções</a>
-                <a href="#">Entrar</a>
-                <a href="#">Cadastrar</a>
+                <a href="eventos.html">Todos os eventos</a>
+                <a href="access.html">Entrar</a>
+                <a href="access.html">Cadastrar</a>
             </nav>
         </div>
     </header>
@@ -661,8 +659,8 @@
             <h2>Ingressos para Shows e Cinema em Chimoio</h2>
             <p>Compre ingressos com facilidade e segurança. Seu ingresso digital entregue instantaneamente em Meticais (MT).</p>
             <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">Comprar Ingressos</a>
-                <a href="#" class="btn btn-outline">Ver Todos os Eventos</a>
+                <a href="access.html" class="btn btn-primary">Comprar Ingressos</a>
+                <a href="access.html" class="btn btn-outline">Ver Todos os Eventos</a>
             </div>
         </div>
     </section>
@@ -677,107 +675,11 @@
             
             <div class="events-filter">
                 <button class="filter-btn active">Todos</button>
-                <button class="filter-btn">Shows</button>
+                <button class="filter-btn">Show</button>
                 <button class="filter-btn">Cinema</button>
-                <button class="filter-btn">Este Fim de Semana</button>
             </div>
             
             <div class="events-grid">
-                <!-- Event Card 1 - Show -->
-                <div class="event-card">
-                    <div class="event-image">
-                        <img src="https://images.unsplash.com/photo-1580651315530-69c8e0026377?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Show de Música">
-                        <div class="event-badge">Show</div>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Festival de Música Manica</h3>
-                        <div class="event-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>15 de Outubro, 20:00</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Centro Cultural do Chimoio</span>
-                        </div>
-                        <div class="event-price">500 MT</div>
-                        <div class="event-actions">
-                            <a href="#" class="btn btn-primary">Comprar</a>
-                            <a href="#" class="btn btn-outline">Detalhes</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Event Card 2 - Cinema -->
-                <div class="event-card">
-                    <div class="event-image">
-                        <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2056&q=80" alt="Estreia de Filme">
-                        <div class="event-badge">Cinema</div>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Aventura em Moçambique</h3>
-                        <div class="event-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>12-25 de Outubro</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Cine Max - Chimoio Shopping</span>
-                        </div>
-                        <div class="event-price">200 MT</div>
-                        <div class="event-actions">
-                            <a href="#" class="btn btn-primary">Comprar</a>
-                            <a href="#" class="btn btn-outline">Detalhes</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Event Card 3 - Show -->
-                <div class="event-card">
-                    <div class="event-image">
-                        <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Show de Música">
-                        <div class="event-badge">Show</div>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Noite de Marrabenta</h3>
-                        <div class="event-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>20 de Outubro, 21:30</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Jardim dos Professores</span>
-                        </div>
-                        <div class="event-price">350 MT</div>
-                        <div class="event-actions">
-                            <a href="#" class="btn btn-primary">Comprar</a>
-                            <a href="#" class="btn btn-outline">Detalhes</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Event Card 4 - Cinema -->
-                <div class="event-card">
-                    <div class="event-image">
-                        <img src="https://images.unsplash.com/photo-1595769816263-9b910be24d5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2079&q=80" alt="Filme de Ação">
-                        <div class="event-badge">Cinema</div>
-                    </div>
-                    <div class="event-content">
-                        <h3 class="event-title">Velocidade Máxima</h3>
-                        <div class="event-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>10-30 de Outubro</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Cine Max - Chimoio Shopping</span>
-                        </div>
-                        <div class="event-price">250 MT</div>
-                        <div class="event-actions">
-                            <a href="#" class="btn btn-primary">Comprar</a>
-                            <a href="#" class="btn btn-outline">Detalhes</a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -811,7 +713,7 @@
                     <div class="feature-icon">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
-                    <h3>App Móvel</h3>
+                    <h3>WebApp Móvel</h3>
                     <p>Compre e gerencie seus ingressos diretamente do seu smartphone.</p>
                 </div>
                 
@@ -853,10 +755,10 @@
                     <h3>Links Rápidos</h3>
                     <ul class="footer-links">
                         <li><a href="#">Início</a></li>
-                        <li><a href="#">Shows</a></li>
-                        <li><a href="#">Cinema</a></li>
-                        <li><a href="#">Promoções</a></li>
-                        <li><a href="#">Como funciona</a></li>
+                        <li><a href="eventos.html">Shows</a></li>
+                        <li><a href="eventos.html">Cinema</a></li>
+                        <li><a href="access.html">Entrar</a></li>
+                        <li><a href="access.html">Cadastrar</a></li>
                     </ul>
                 </div>
                 
@@ -942,4 +844,5 @@
         });
     </script>
 </body>
+
 </html>
